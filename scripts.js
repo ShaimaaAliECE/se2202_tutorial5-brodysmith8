@@ -11,8 +11,21 @@ createGameBoard()
 function createGameBoard()
 {
     // Programatically add a button with square brackets enclosing an empty space to each cell in the gameboard
-   
+    let tiles = document.querySelectorAll('td');
+
+    for(let i = 0; i < tiles.length; i++) {
+        tiles[i].appendChild(document.createElement("button"));
+    }
+    
+    let buttons = document.querySelectorAll('button')
+    for(let i = 0; i < buttons.length; i++) {
+        buttons[i].innerHTML += "[ ]";
+    }
+
+    document.getElementById("next-lbl").innerHTML = nextPlayer;
 }
+
+let buttonCounter = 0;
 
 // Programatically add 'takeCell' as an event listener to all the buttons on the board
 let btns = document.querySelectorAll('button');
@@ -29,11 +42,25 @@ function takeCell(event)
     */
 
     // Make sure the button is clickable only once (I didn't mention how to do that, look it up :) )
+    console.log("click");
+    event.target.innerHTML = "[" + nextPlayer + "]";
+    event.target.disabled = true;
+    
+    if (nextPlayer == "X") {
+        nextPlayer = "O";
+    } else if (nextPlayer == "O") {
+        nextPlayer = "X";
+    }
+
+    document.getElementById("next-lbl").innerHTML = nextPlayer;
 
     // Check if the game is over
     if (isGameOver())
     {
         // let the lable with the id 'game-over-lbl' display the words 'Game Over' inside <h1> element
+        let h1 = document.createElement("h1");
+        h1.innerHTML = "Game Over";
+        document.getElementById("game-over-lbl").appendChild(h1);
     }
 
     // I'll leave declaring the winner for your intrinsic motivation, it's not required for this assignment 
@@ -42,5 +69,10 @@ function takeCell(event)
 function isGameOver()
 {
     // This function returns true if all the buttons are disabled and false otherwise 
-   
+    buttonCounter++;
+    if (buttonCounter == 9) {
+        return true;
+    } else {
+        return false;
+    }
 }
